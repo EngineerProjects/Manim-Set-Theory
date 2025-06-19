@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/1185818338_1703504961_3481380946.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_1663798368_3481380946.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_2594630527_3481380946.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_2574473371_631829896.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_2276068630_622240751.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_2349816757_1909981450.mp4'
+file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/TwoTransforms/624642324_3639325809_2692739811.mp4'
