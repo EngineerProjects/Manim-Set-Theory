@@ -104,6 +104,85 @@ class SetTheoryIntroExact(Scene):
         
         self.wait(2)
 
+class SetDefinition(Scene):
+    def construct(self):
+        # Same background color as previous scene
+        self.camera.background_color = "#F0F0F0"
+        
+        # Create the definition text
+        definition = Text(
+            "A set is a collection of objects (elements).",
+            font_size=36,
+            color="#505050",
+            font="sans-serif",
+            slant=ITALIC,
+            weight=BOLD
+        )
+        
+        # Shift the text more to the left
+        definition.to_edge(UP, buff=2.0)
+        definition.shift(LEFT * 1)
+        
+        # Create a circle with dark blue outline
+        circle = Circle(
+            radius=2.5,  
+            color="#00396B",  
+            stroke_width=3.0,
+            fill_opacity=0
+        )
+        
+        # Position the circle below the text
+        circle.next_to(definition, DOWN, buff=0.5)
+
+        # Group everything and shift up
+        group = VGroup(definition, circle)
+        group.shift(UP * 1.0)
+
+        # Load the car SVG from file - position on the LEFT side of the circle
+        car = SVGMobject("images/car-svgrepo-com.svg")
+        # Keep original colors - don't set color
+        car.scale(0.3)  # Make it smaller
+        # Position on the left side of the circle
+        car.move_to(circle.get_center() + LEFT * 1.5)
+        
+        # Load the atom SVG from file - position at the BOTTOM of the circle
+        atom = SVGMobject("images/atom-symbol-svgrepo-com.svg")
+        atom.set_color(BLACK)
+        atom.set_fill(BLACK, 1)
+        atom.scale(0.4)  # Make it smaller
+        # Position at the bottom of the circle
+        atom.move_to(circle.get_center() + DOWN * 1.5)
+        
+        # Create the equation - position on the RIGHT side of the circle
+        equation = MathTex(r"\mathbf{1 + 1 = 2}", color=BLACK)
+        equation.scale(0.8)
+        # Position on the right side of the circle
+        equation.move_to(circle.get_center() + RIGHT * 1.0)
+        
+        # Animation sequence
+        # 1. Initial text and circle
+        self.play( 
+            Write(definition),
+            Create(circle),
+            run_time=2
+        )
+        self.wait(1)
+        
+        # 2. Add the car
+        self.play(FadeIn(car), run_time=1)
+        self.wait(2)
+        
+        # 3. Add the atom
+        self.play(FadeIn(atom), run_time=1)
+        self.wait(3)
+        
+        # 4. Add the equation
+        self.play(Write(equation), run_time=1)
+        
+        # Hold the final scene
+        self.wait(2)
+
+
 class SetOfTriangles(Scene):
     def construct(self):
         # Same background color as previous scene
