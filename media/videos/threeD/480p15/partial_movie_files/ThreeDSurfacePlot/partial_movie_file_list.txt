@@ -1,4 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/threeD/480p15/partial_movie_files/ThreeDSurfacePlot/238433677_3625825834_1040183843.mp4'
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/threeD/480p15/partial_movie_files/ThreeDSurfacePlot/3711431001_2339669586_811159391.mp4'
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/threeD/480p15/partial_movie_files/ThreeDSurfacePlot/242683132_945030808_1243272694.mp4'

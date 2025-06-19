@@ -1,5 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/DifferentRotations/1185818338_2266272325_937106607.mp4'
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/DifferentRotations/624642324_2038664311_937106607.mp4'
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/DifferentRotations/624642324_4039168575_937106607.mp4'
-file 'file:/home/amiche/Projects/VideosMaths/Set_theory/media/videos/main/480p15/partial_movie_files/DifferentRotations/624642324_2688965532_4031458786.mp4'
