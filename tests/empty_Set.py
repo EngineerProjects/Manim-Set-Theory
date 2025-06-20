@@ -1,0 +1,212 @@
+from manim import *
+
+class EmptySetTitle(Scene):
+    def construct(self):
+        # Same background color as previous scenes
+        self.camera.background_color = "#F0F0F0"
+        
+        # Create the "The Empty Set ∅" title
+        empty_set_title = Text(
+            "The Empty Set ∅",
+            font_size=50,
+            color=BLACK,
+            font="sans-serif",
+            slant=ITALIC,
+            weight=LIGHT
+        )
+        
+        # Center the title
+        empty_set_title.move_to(ORIGIN)
+        
+        # Create underline
+        underline = Line(
+            start=empty_set_title.get_corner(DOWN + LEFT),
+            end=empty_set_title.get_corner(DOWN + RIGHT),
+            color=BLACK,
+            stroke_width=2
+        )
+        
+        # Animation sequence
+        self.play(AddTextLetterByLetter(empty_set_title), run_time=2)
+        self.wait(0.5)
+        self.play(Create(underline), run_time=1)
+        self.wait(2)
+
+class EmptySetDefinition(Scene):
+    def construct(self):
+        # Same background color as previous scenes
+        self.camera.background_color = "#F0F0F0"
+        
+        # Definition text - first line
+        definition_line1 = MarkupText(
+            '<b><i>The empty set ∅ is a set which contains</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        
+        definition_line2 = MarkupText(
+            '<b><i>no elements.</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        
+        # Position the definition text at the top
+        definition_line1.to_edge(UP, buff=1.0)
+        definition_line1.to_edge(LEFT, buff=0.5)
+        definition_line2.next_to(definition_line1, DOWN, aligned_edge=LEFT, buff=0.1)
+        
+        # Show definition text
+        self.play(Write(VGroup(definition_line1, definition_line2)), run_time=2.5)
+        self.wait(2)
+        
+        # Theorem statement - CENTERED
+        theorem_text = MarkupText(
+            '<b><i>∅ is a subset of any set</i></b>',
+            color="#505050",
+            font_size=42,
+            font="sans-serif"
+        )
+        theorem_text.move_to(ORIGIN + UP * 0.3)  # Centered horizontally
+        
+        # Show theorem
+        self.play(Write(theorem_text), run_time=2)
+        self.wait(0.6)
+        
+        # Proof heading
+        proof_heading = MarkupText(
+            '<b><i>Proof:</i></b>',
+            color="#505050",
+            font_size=38,
+            font="sans-serif"
+        )
+        proof_heading.next_to(theorem_text, DOWN, buff=0.6)
+        proof_heading.to_edge(LEFT, buff=0.5)
+        
+        # Show proof heading
+        self.play(Write(proof_heading), run_time=1.5)
+        self.wait(0.4)
+        
+        # Proof text - first line
+        proof_line1 = MarkupText(
+            '<b><i>Let A be a set. Since ∅ has no elements, all the</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        
+        proof_line2 = MarkupText(
+            '<b><i>elements in ∅ must also be in A.</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        
+        # Position proof text
+        proof_line1.next_to(proof_heading, DOWN, aligned_edge=LEFT, buff=0.4)
+        proof_line2.next_to(proof_line1, DOWN, aligned_edge=LEFT, buff=0.1)
+        
+        # Show proof text
+        self.play(Write(proof_line1), run_time=2)
+        self.wait(0.2)
+        self.play(Write(proof_line2), run_time=2)
+        self.wait(0.3)
+        
+        # Conclusion - positioned below the proof text
+        conclusion = MathTex(
+            r'\text{Therefore, } \underline{\varnothing \subseteq A}',
+            font_size=50,
+            color="#505050"
+        )
+        # Position it below proof_line2 with minimal spacing
+        conclusion.next_to(proof_line2, DOWN, buff=0.6)
+        conclusion.to_edge(LEFT, buff=1.5)  # Align with proof indentation
+        
+        # Show conclusion
+        self.play(Write(conclusion), run_time=2)
+        self.wait(3)
+
+class EmptySetUniqueness(Scene):
+    def construct(self):
+        # Same background color as previous scenes
+        self.camera.background_color = "#F0F0F0"
+        
+        # Main statement at the top
+        uniqueness_statement = MarkupText(
+            '<b><i>∅ is unique</i></b>',
+            color="#505050",
+            font_size=48,
+            font="sans-serif"
+        )
+        uniqueness_statement.to_edge(UP, buff=1.0)  # Reduced from 1.5
+        
+        # Show main statement
+        self.play(Write(uniqueness_statement), run_time=2)
+        self.wait(1.5)
+        
+        # Proof heading
+        proof_heading = MarkupText(
+            '<b><i>Proof</i></b>',
+            color="#505050",
+            font_size=40,
+            font="sans-serif"
+        )
+        proof_heading.next_to(uniqueness_statement, DOWN, buff=0.8)  # Reduced from 1.5
+        proof_heading.to_edge(LEFT, buff=0.5)
+        
+        # Show proof heading
+        self.play(Write(proof_heading), run_time=1.5)
+        self.wait(1)
+        
+        # Proof line 1
+        proof_line1 = MarkupText(
+            '<b><i>let ∅₁ and ∅₂ be two empty sets.</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        proof_line1.next_to(proof_heading, DOWN, buff=0.4)  # Reduced from 0.8
+        proof_line1.to_edge(LEFT, buff=0.5)
+        
+        # Proof line 2
+        proof_line2 = MarkupText(
+            '<b><i>Since the empty set is a subset of all sets</i></b>',
+            color="#505050",
+            font_size=36,
+            font="sans-serif"
+        )
+        proof_line2.next_to(proof_line1, DOWN, buff=0.2)  # Reduced from 0.3
+        proof_line2.to_edge(LEFT, buff=0.5)
+        
+        # Show proof text
+        self.play(Write(proof_line1), run_time=2)
+        self.wait(1)
+        self.play(Write(proof_line2), run_time=2)
+        self.wait(1.5)
+        
+        # Subset relations - positioned below proof text
+        subset_relations = MathTex(
+            r'\varnothing_1 \subseteq \varnothing_2 \quad \text{and} \quad \varnothing_2 \subseteq \varnothing_1',
+            font_size=50,
+            color="#505050"
+        )
+        subset_relations.next_to(proof_line2, DOWN, buff=0.6)  # Reduced from 1.2
+        subset_relations.to_edge(LEFT, buff=0.5)
+        
+        # Show subset relations
+        self.play(Write(subset_relations), run_time=2.5)
+        self.wait(2)
+        
+        # Final conclusion - positioned below subset relations
+        conclusion = MathTex(
+            r'\text{Therefore, } \varnothing_1 = \varnothing_2 = \varnothing',
+            font_size=50,
+            color="#505050"
+        )
+        conclusion.next_to(subset_relations, DOWN, buff=0.6)  # Reduced from 1.2
+        conclusion.to_edge(LEFT, buff=0.5)
+        
+        # Show conclusion
+        self.play(Write(conclusion), run_time=2)
+        self.wait(3)
