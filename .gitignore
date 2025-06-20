@@ -12,3 +12,4 @@ wheels/
 
 .lh
 media/
+uv.lock
