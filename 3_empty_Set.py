@@ -33,7 +33,8 @@ class EmptySet(Scene):
             color=BLACK,
             stroke_width=2
         )
-        
+        underline.shift(DOWN * 0.2)
+
         # Animation sequence
         self.play(AddTextLetterByLetter(empty_set_title), run_time=2)
         self.wait(0.5)

@@ -16,7 +16,7 @@ class Subsets(Scene):
         self.show_equality_theorem()
         self.clear()
         self.show_transitivity()
-        
+
     
     def show_title(self):
         """Display the main title: Subsets"""
@@ -40,7 +40,8 @@ class Subsets(Scene):
             color=BLACK,
             stroke_width=2
         )
-        
+        underline.shift(DOWN * 0.2)
+
         # Animation sequence
         self.play(AddTextLetterByLetter(subsets_title), run_time=2)
         self.wait(0.5)

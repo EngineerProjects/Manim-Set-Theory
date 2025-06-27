@@ -64,6 +64,7 @@ class Basics(Scene):
             color=BLACK,
             stroke_width=2
         )
+        underline.shift(DOWN * 0.2)
         
         self.play(AddTextLetterByLetter(main_title), run_time=2)
         self.wait(0.5)
