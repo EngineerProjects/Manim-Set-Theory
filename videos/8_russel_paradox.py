@@ -62,28 +62,27 @@ class RussellsParadox(Scene):
         self.wait(1)
         
         # Create simple geometric objects instead of SVGs for better compatibility
-        # You can replace these with SVG objects if you have the files
-        statue = Rectangle(width=0.4, height=0.8, color=BLUE, fill_opacity=0.7)
+        statue = SVGMobject("images/statue-of-liberty-svgrepo-com.svg").scale(0.3)
         statue.move_to(UP * 1.7 + LEFT * 0.2)
         statue_label = Text("🗽", font_size=20).move_to(statue.get_center())
         
-        carrot = Triangle(color=ORANGE, fill_opacity=0.7).scale(0.3)
+        carrot = SVGMobject("images/carrot-svgrepo-com.svg").scale(0.3)
         carrot.move_to(UP * 0.8 + LEFT * 1.8)
         carrot_label = Text("🥕", font_size=20).move_to(carrot.get_center())
         
-        bicycle = Circle(radius=0.3, color=BLACK, fill_opacity=0.7)
+        bicycle = SVGMobject("images/bycicle-svgrepo-com.svg").scale(0.3)
         bicycle.move_to(DOWN * 0.2 + LEFT * 1.5)
         bicycle_label = Text("🚲", font_size=20).move_to(bicycle.get_center())
         
-        piano = Rectangle(width=0.6, height=0.4, color="#8B4513", fill_opacity=0.7)
+        piano = SVGMobject("images/piano-svgrepo-com.svg").scale(0.3)
         piano.move_to(UP * 0.7 + RIGHT * 0.6)
         piano_label = Text("🎹", font_size=20).move_to(piano.get_center())
         
-        books = Rectangle(width=0.4, height=0.6, color=GRAY, fill_opacity=0.7)
+        books = SVGMobject("images/books-svgrepo-com.svg").scale(0.3)
         books.move_to(UP * 1.3 + RIGHT * 1.8)
         books_label = Text("📚", font_size=20).move_to(books.get_center())
         
-        palm_tree = Polygon(*[[0, 0], [0.2, 1], [-0.2, 1]], color=GREEN, fill_opacity=0.7)
+        palm_tree = SVGMobject("images/coconut-tree-svgrepo-com.svg").scale(0.3)
         palm_tree.move_to(DOWN * 1.5 + RIGHT * 0.8)
         palm_tree_label = Text("🌴", font_size=20).move_to(palm_tree.get_center())
         

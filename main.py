@@ -1,113 +1,188 @@
-from manim import *
-from manim_voiceover import VoiceoverScene
-from manim_voiceover.services.gtts import GTTSService
+#!/usr/bin/env python3
+"""
+Solution 1: Render chapters separately and concatenate them.
+This is the most reliable approach that preserves audio and visual quality.
+"""
 
-# Import all your chapter classes
-from scenes import (
-    BasicsWithVoiceover,
-    SubsetsWithVoiceover,
-    EmptySetWithVoiceover,
-    UnionAndIntersectionWithVoiceover,
-    TheComplementWithVoiceover,
-    DeMorganLawsWithVoiceover,
-    SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover,
-    RussellsParadoxWithVoiceover,
-)
+import subprocess
+import os
+from pathlib import Path
 
-class SetTheoryCompleteVideo(VoiceoverScene):
+def render_complete_video():
     """
-    Complete Set Theory video combining all chapters using Manim sections.
-    This creates a single video file with all chapters seamlessly connected.
+    Render all chapters separately and concatenate them into a single video.
     """
     
-    def construct(self):
-        # Set up TTS service
-        self.set_speech_service(GTTSService(lang="en", tld="com"), create_subcaption=False)
+    # Define all chapters in order
+    chapters = [
+        ("scenes/ch01_basics", "BasicsWithVoiceover"),
+        ("scenes/ch02_subsets", "SubsetsWithVoiceover"), 
+        ("scenes/ch03_empty_set", "EmptySetWithVoiceover"),
+        ("scenes/ch04_union_and_intersection", "UnionAndIntersectionWithVoiceover"),
+        ("scenes/ch05_complement", "TheComplementWithVoiceover"),
+        ("scenes/ch06_de_morgan_laws", "DeMorganLawsWithVoiceover"),
+        ("scenes/ch07_sets_of_sets_and_power_sets", "SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover"),
+        ("scenes/ch08_russells_paradox", "RussellsParadoxWithVoiceover"),
+    ]
+    
+    # Output and temporary directories
+    output_dir = Path("media/videos")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    temp_dir = Path("temp_chapters")
+    temp_dir.mkdir(exist_ok=True)
+    
+    # Video quality settings
+    quality = "-qh"  # high quality
+    
+    rendered_files = []
+    
+    print("Rendering individual chapters...")
+    
+    # Step 1: Render each chapter individually
+    for i, (module, class_name) in enumerate(chapters, 1):
+        print(f"Rendering Chapter {i}: {class_name}")
         
-        # Set consistent background color for entire video
-        self.camera.background_color = "#F0F0F0"
+        # Check if the file exists
+        scene_file = Path(f"{module}.py")
+        if not scene_file.exists():
+            print(f"Error: Scene file {scene_file} does not exist!")
+            print(f"Current working directory: {Path.cwd()}")
+            print(f"Looking for: {scene_file.absolute()}")
+            return False
         
-        # Chapter 1: The Basics (0:00 - 4:21)
-        self.run_chapter(BasicsWithVoiceover)
-        self.clear()
+        print(f"Found scene file: {scene_file}")
         
-        # Chapter 2: Subsets (4:21 - 7:25)
-        self.run_chapter(SubsetsWithVoiceover)
-        self.clear()
-
-        # Chapter 3: The Empty Set (7:25 - 8:21)
-        self.run_chapter(EmptySetWithVoiceover)
-        self.clear()
-        
-        # Chapter 4: Union and Intersection (8:21 - 20:02)
-        self.run_chapter(UnionAndIntersectionWithVoiceover)
-        self.clear()
-        
-        # Chapter 5: The Complement (20:02 - 24:10)
-        self.run_chapter(TheComplementWithVoiceover)
-        self.clear()
-        
-        # Chapter 6: De Morgan's Laws (24:10 - 26:13)
-        self.run_chapter(DeMorganLawsWithVoiceover)
-        self.clear()
-        
-        # Chapter 7: Sets of Sets, Power Sets, Indexed Families (26:13+)
-        self.run_chapter(SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover)
-        self.clear()
-        
-        # Chapter 8: Russell's Paradox
-        self.run_chapter(RussellsParadoxWithVoiceover)
-
-    def run_chapter(self, ChapterClass):
-        """
-        Run a chapter by creating an instance and calling its construct method.
-        This is the simplest and most reliable approach.
-        """
-        # Create instance of the chapter
-        chapter = ChapterClass()
-        
-        # Set up the chapter with the same configuration as our main scene
-        chapter.set_speech_service(self.speech_service)
-        chapter.camera.background_color = self.camera.background_color
-        
-        # Store references to our scene's methods
-        original_play = chapter.play
-        original_add = chapter.add
-        original_remove = chapter.remove
-        original_clear = chapter.clear
-        original_wait = chapter.wait
-        
-        # Replace chapter's methods with our scene's methods to capture all animations
-        chapter.play = self.play
-        chapter.add = self.add
-        chapter.remove = self.remove
-        chapter.clear = self.clear
-        chapter.wait = self.wait
-        
-        # Add safe_wait method if it exists in the chapter
-        if hasattr(chapter, 'safe_wait'):
-            chapter.safe_wait = self.safe_wait
+        # Construct the corrected manim command
+        cmd = [
+            "manim",
+            "render",  # Add explicit render command
+            quality,
+            f"{module}.py",
+            class_name,
+            "-o", f"chapter_{i:02d}_{class_name}"  # Correct output flag syntax
+        ]
         
         try:
-            # Execute the chapter's construct method
-            chapter.construct()
-        except Exception as e:
-            print(f"Error in chapter {ChapterClass.__name__}: {e}")
-            # Restore original methods in case of error
-            chapter.play = original_play
-            chapter.add = original_add
-            chapter.remove = original_remove
-            chapter.clear = original_clear
-            chapter.wait = original_wait
-        finally:
-            # Clean up: restore original methods (good practice)
-            chapter.play = original_play
-            chapter.add = original_add
-            chapter.remove = original_remove
-            chapter.clear = original_clear
-            chapter.wait = original_wait
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            print(f"Chapter {i} rendered successfully")
+            
+            # Find the generated video file
+            chapter_file = find_generated_video(class_name, i)
+            if chapter_file:
+                rendered_files.append(chapter_file)
+            else:
+                print(f"Could not find output file for Chapter {i}")
+                
+        except subprocess.CalledProcessError as e:
+            print(f"Error rendering Chapter {i}: {e}")
+            print(f"STDOUT: {e.stdout}")
+            print(f"STDERR: {e.stderr}")
+            return False
+    
+    if len(rendered_files) != len(chapters):
+        print(f"Only {len(rendered_files)} of {len(chapters)} chapters rendered successfully")
+        return False
+    
+    print(f"All {len(chapters)} chapters rendered successfully")
+    
+    # Step 2: Create file list for ffmpeg
+    file_list_path = temp_dir / "file_list.txt"
+    with open(file_list_path, 'w') as f:
+        for video_file in rendered_files:
+            f.write(f"file '{video_file.absolute()}'\n")
+    
+    # Step 3: Concatenate videos using ffmpeg
+    print("Concatenating chapters into final video...")
+    
+    final_output = output_dir / "SetTheoryCompleteVideo.mp4"
+    
+    ffmpeg_cmd = [
+        "ffmpeg",
+        "-f", "concat",
+        "-safe", "0",
+        "-i", str(file_list_path),
+        "-c", "copy",
+        "-y",
+        str(final_output)
+    ]
+    
+    try:
+        result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True, check=True)
+        print(f"Final video created: {final_output}")
+        
+        # Clean up temporary files
+        cleanup_temp_files(temp_dir)
+        
+        return True
+        
+    except subprocess.CalledProcessError as e:
+        print(f"Error concatenating videos: {e}")
+        print(f"STDERR: {e.stderr}")
+        return False
 
-    def safe_wait(self, duration):
-        """Helper method to safely handle wait times"""
-        if duration > 0:
-            self.wait(duration)
+def find_generated_video(class_name, chapter_num):
+    """Find the generated video file for a chapter."""
+    
+    possible_paths = [
+        Path("media/videos") / f"chapter_{chapter_num:02d}_{class_name}.mp4",
+        Path("media/videos") / f"{class_name}.mp4",
+    ]
+    
+    for path in possible_paths:
+        if path.exists():
+            return path
+    
+    # Search recursively in media directory
+    media_dir = Path("media")
+    if media_dir.exists():
+        for video_file in media_dir.rglob("*.mp4"):
+            if class_name in video_file.name or f"chapter_{chapter_num:02d}" in video_file.name:
+                return video_file
+    
+    return None
+
+def cleanup_temp_files(temp_dir):
+    """Clean up temporary files."""
+    try:
+        import shutil
+        shutil.rmtree(temp_dir)
+        print("Temporary files cleaned up")
+    except Exception as e:
+        print(f"Could not clean up temporary files: {e}")
+
+def list_scene_files():
+    """List all scene files to help with debugging."""
+    scenes_dir = Path("scenes")
+    if scenes_dir.exists():
+        print(f"Found scenes directory: {scenes_dir.absolute()}")
+        print("Scene files found:")
+        for py_file in scenes_dir.glob("*.py"):
+            print(f"  - {py_file}")
+    else:
+        print(f"Scenes directory not found: {scenes_dir.absolute()}")
+    
+def test_manim_command():
+    """Test if manim command works with current syntax."""
+    try:
+        result = subprocess.run(["manim", "--help"], capture_output=True, text=True, check=True)
+        print("Manim command is working correctly")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Error testing manim command: {e}")
+        return False
+
+if __name__ == "__main__":
+    # List scene files for debugging
+    list_scene_files()
+    
+    # Test manim first
+    if not test_manim_command():
+        print("Manim command test failed. Please check your installation.")
+        exit(1)
+    
+    success = render_complete_video()
+    if success:
+        print("Complete video rendering finished successfully")
+    else:
+        print("Video rendering failed")
+        exit(1)

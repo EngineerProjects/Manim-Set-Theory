@@ -204,7 +204,7 @@ class BasicsWithVoiceover(VoiceoverScene):
             # Equation appears exactly when "mathematical objects" is mentioned
             self.play(Write(equation), run_time=tracker.duration)
         
-        with self.voiceover(text="Possibly more importantly, a set is a way of packaging up objects which share similar properties in a meaningful way.", create_subcaption=False) as tracker:
+        with self.voiceover(text="Possibly more importantly, a set is a way of packaging up objects which share similar properties in a meaningful way.") as tracker:
             self.wait(tracker.duration)
 
     def set_of_triangles(self):
@@ -292,7 +292,7 @@ class BasicsWithVoiceover(VoiceoverScene):
             if remaining_time > 0.1:
                 self.wait(remaining_time)
         
-        with self.voiceover(text="We can unambiguously state whether something is or isn't in this set.", create_subcaption=False) as tracker:
+        with self.voiceover(text="We can unambiguously state whether something is or isn't in this set.") as tracker:
             self.wait(tracker.duration)
         
         with self.voiceover(text="This is in") as tracker:
@@ -319,10 +319,10 @@ class BasicsWithVoiceover(VoiceoverScene):
             if remaining_time > 0.1:
                 self.wait(remaining_time)
         
-        with self.voiceover(text="This lack of ambiguity in what is or what isn't in a set is foundational to set theory.", create_subcaption=False) as tracker:
+        with self.voiceover(text="This lack of ambiguity in what is or what isn't in a set is foundational to set theory.") as tracker:
             self.wait(tracker.duration)
         
-        with self.voiceover(text="We can also make claims about the set and assess again without ambiguity whether they're true or false.", create_subcaption=False) as tracker:
+        with self.voiceover(text="We can also make claims about the set and assess again without ambiguity whether they're true or false.") as tracker:
             self.wait(tracker.duration)
         
         with self.voiceover(text="It's true that an element of the set of triangles has three sides.") as tracker:
@@ -660,7 +660,7 @@ class BasicsWithVoiceover(VoiceoverScene):
             if remaining_time > 0.1:
                 self.wait(remaining_time)
         
-        with self.voiceover(text="since its belonging to the set is predicated on this criterion. In this case the predicate is being a prime number. Also notice we have a shorthand for the phrase such that which is this vertical line.", create_subcaption=False) as tracker:
+        with self.voiceover(text="since its belonging to the set is predicated on this criterion. In this case the predicate is being a prime number. Also notice we have a shorthand for the phrase such that which is this vertical line.") as tracker:
             self.wait(tracker.duration)
 
     def number_sets_declaration(self):
