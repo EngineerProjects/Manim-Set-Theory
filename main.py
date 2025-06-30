@@ -1,15 +1,9 @@
-#!/usr/bin/env python3
-"""
-Main script to build the complete Set Theory video from all chapters.
-Renders chapters 1-8 and concatenates them into a single video.
-"""
-
 from manim import *
 from manim_voiceover import VoiceoverScene
 from manim_voiceover.services.gtts import GTTSService
 
-# Import all scene classes
-from voice import (
+# Import all your chapter classes
+from scenes import (
     BasicsWithVoiceover,
     SubsetsWithVoiceover,
     EmptySetWithVoiceover,
@@ -17,64 +11,103 @@ from voice import (
     TheComplementWithVoiceover,
     DeMorganLawsWithVoiceover,
     SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover,
-    RussellsParadoxWithVoiceover
+    RussellsParadoxWithVoiceover,
 )
 
-class FullSetTheoryVideo(VoiceoverScene):
+class SetTheoryCompleteVideo(VoiceoverScene):
+    """
+    Complete Set Theory video combining all chapters using Manim sections.
+    This creates a single video file with all chapters seamlessly connected.
+    """
+    
     def construct(self):
-        """Main construct method that combines all 8 chapters into one video."""
         # Set up TTS service
         self.set_speech_service(GTTSService(lang="en", tld="com"), create_subcaption=False)
         
-        # Set consistent background color
+        # Set consistent background color for entire video
         self.camera.background_color = "#F0F0F0"
         
-        # List of all chapter scene classes in order
-        chapter_scenes = [
-            BasicsWithVoiceover,
-            SubsetsWithVoiceover,
-            EmptySetWithVoiceover,
-            UnionAndIntersectionWithVoiceover,
-            TheComplementWithVoiceover,
-            DeMorganLawsWithVoiceover,
-            SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover,
-            RussellsParadoxWithVoiceover
-        ]
+        # Chapter 1: The Basics (0:00 - 4:21)
+        self.run_chapter(BasicsWithVoiceover)
+        self.clear()
         
-        # Execute each chapter's construct method in sequence
-        for i, scene_class in enumerate(chapter_scenes, 1):
-            print(f"🎬 Rendering Chapter {i}: {scene_class.__name__}")
-            
-            # Create an instance and copy its methods to this scene
-            chapter_instance = scene_class()
-            
-            # Copy the TTS service to the chapter instance
-            chapter_instance.set_speech_service(GTTSService(lang="en", tld="com"), create_subcaption=False)
-            chapter_instance.camera.background_color = "#F0F0F0"
-            
-            # Execute the chapter's construct method in the context of this main scene
-            # We need to bind the chapter's methods to this scene's context
-            original_self = chapter_instance
-            
-            # Temporarily replace the chapter's scene methods with this scene's methods
-            chapter_instance.add = self.add
-            chapter_instance.remove = self.remove
-            chapter_instance.play = self.play
-            chapter_instance.wait = self.wait
-            chapter_instance.clear = self.clear
-            chapter_instance.camera = self.camera
-            chapter_instance.renderer = self.renderer
-            chapter_instance.mobjects = self.mobjects
-            chapter_instance.foreground_mobjects = self.foreground_mobjects
-            
-            # Call the chapter's construct method
-            chapter_instance.construct()
-            
-            # Add a brief pause between chapters
-            if i < len(chapter_scenes):
-                self.wait(1)
-                
-        print("✅ All chapters rendered successfully into single video!")
+        # Chapter 2: Subsets (4:21 - 7:25)
+        self.run_chapter(SubsetsWithVoiceover)
+        self.clear()
 
-# To render this scene, run:
-# manim main.py FullSetTheoryVideo -pqh
+        # Chapter 3: The Empty Set (7:25 - 8:21)
+        self.run_chapter(EmptySetWithVoiceover)
+        self.clear()
+        
+        # Chapter 4: Union and Intersection (8:21 - 20:02)
+        self.run_chapter(UnionAndIntersectionWithVoiceover)
+        self.clear()
+        
+        # Chapter 5: The Complement (20:02 - 24:10)
+        self.run_chapter(TheComplementWithVoiceover)
+        self.clear()
+        
+        # Chapter 6: De Morgan's Laws (24:10 - 26:13)
+        self.run_chapter(DeMorganLawsWithVoiceover)
+        self.clear()
+        
+        # Chapter 7: Sets of Sets, Power Sets, Indexed Families (26:13+)
+        self.run_chapter(SetsOfSetsPowerSetsIndexedFamiliesWithVoiceover)
+        self.clear()
+        
+        # Chapter 8: Russell's Paradox
+        self.run_chapter(RussellsParadoxWithVoiceover)
+
+    def run_chapter(self, ChapterClass):
+        """
+        Run a chapter by creating an instance and calling its construct method.
+        This is the simplest and most reliable approach.
+        """
+        # Create instance of the chapter
+        chapter = ChapterClass()
+        
+        # Set up the chapter with the same configuration as our main scene
+        chapter.set_speech_service(self.speech_service)
+        chapter.camera.background_color = self.camera.background_color
+        
+        # Store references to our scene's methods
+        original_play = chapter.play
+        original_add = chapter.add
+        original_remove = chapter.remove
+        original_clear = chapter.clear
+        original_wait = chapter.wait
+        
+        # Replace chapter's methods with our scene's methods to capture all animations
+        chapter.play = self.play
+        chapter.add = self.add
+        chapter.remove = self.remove
+        chapter.clear = self.clear
+        chapter.wait = self.wait
+        
+        # Add safe_wait method if it exists in the chapter
+        if hasattr(chapter, 'safe_wait'):
+            chapter.safe_wait = self.safe_wait
+        
+        try:
+            # Execute the chapter's construct method
+            chapter.construct()
+        except Exception as e:
+            print(f"Error in chapter {ChapterClass.__name__}: {e}")
+            # Restore original methods in case of error
+            chapter.play = original_play
+            chapter.add = original_add
+            chapter.remove = original_remove
+            chapter.clear = original_clear
+            chapter.wait = original_wait
+        finally:
+            # Clean up: restore original methods (good practice)
+            chapter.play = original_play
+            chapter.add = original_add
+            chapter.remove = original_remove
+            chapter.clear = original_clear
+            chapter.wait = original_wait
+
+    def safe_wait(self, duration):
+        """Helper method to safely handle wait times"""
+        if duration > 0:
+            self.wait(duration)

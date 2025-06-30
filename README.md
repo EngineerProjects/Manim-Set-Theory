@@ -9,6 +9,11 @@ This project recreates Dr. Will Wood's "Set Theory | All-in-One Video" using Pyt
 
 **Before installing Python dependencies**, you must install the following system packages:
 
+### Install uv if needed
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | less
+```
+
 ```bash
 # Essential build tools and Cairo/Pango for rendering
 sudo apt update
@@ -78,19 +83,20 @@ The project recreates the following chapters from the original video:
 # Render a specific scene
 manim -pql scenes/empty_set.py EmptySet
 
-# Render all scenes in a file
-manim -pql scenes/empty_set.py
 ```
 
 ### With AI Voiceover
 ```bash
 # Using Google TTS (free)
-manim -pql scenes/set_definition.py SetDefinition
+manim -pql voice/set_definition.py SetDefinition
 
-# For higher quality voices, set up API keys:
-# ElevenLabs: export ELEVEN_API_KEY=your_key
-# OpenAI: export OPENAI_API_KEY=your_key
 ```
+
+### Full videos
+```bash
+manim -pqh main.py SetTheoryCompleteVideo
+```
+
 
 ## Text-to-Speech Services
 
@@ -110,8 +116,7 @@ Set_theory/
 ├── videos/           # Individual scene classes
 ├── tests/           # Test implementations  
 ├── images/          # SVG assets and graphics
-├── scripts/         # Audio scripts and transcripts
-└── output/          # Rendered video files
+└── scenes/          
 ```
 
 ## Development
